@@ -1,8 +1,5 @@
-# bigscape_project
-Complete workflow from genome download to BGC network visualization
-
 # network_workflow
-workflow para la creación de redes desde 0
+Complete workflow from genome download to BGC network visualization
 ## Meetings journal
 ### Reunión 25/May/2021
 
