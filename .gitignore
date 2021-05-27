@@ -1,0 +1,9 @@
+# Project exclude paths
+/antismash/
+/for_bigscape/
+/old_outputs/
+/prokka/
+/prokka_out/
+/unzip/
+/venv/
+/zip/
