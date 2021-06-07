@@ -10,8 +10,15 @@
       <excludeFolder url="file://$MODULE_DIR$/old_outputs" />
       <excludeFolder url="file://$MODULE_DIR$/for_bigscape" />
       <excludeFolder url="file://$MODULE_DIR$/antismash" />
+      <excludeFolder url="file://$MODULE_DIR$/to_filter_strains" />
+      <excludeFolder url="file://$MODULE_DIR$/old_folders" />
+      <excludeFolder url="file://$MODULE_DIR$/prokka_gbks" />
+      <excludeFolder url="file://$MODULE_DIR$/test_antismash" />
+      <excludeFolder url="file://$MODULE_DIR$/bigscape_output_test" />
+      <excludeFolder url="file://$MODULE_DIR$/bigscape_output" />
+      <excludeFolder url="file://$MODULE_DIR$/antismash_test_out" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (bigscape_project)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

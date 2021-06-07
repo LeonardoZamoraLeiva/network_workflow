@@ -15,6 +15,7 @@ def bigscape_func():
 
 def modify_output():
     # definir carpetas
+    original_folder = os.getcwd()
     os.chdir('{}/bigscape_output/network_files'.format(os.getcwd()))
     root_dirs = next(os.walk('./'))[1]
     network_folders = str('./' + root_dirs[0])
@@ -64,3 +65,4 @@ def modify_output():
                     b3.to_csv(name_final_b, index=False)
 
         i += 1
+    os.chdir(original_folder)
