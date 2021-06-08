@@ -38,7 +38,7 @@ Se creo la funcion que crea la visualizacion de los nodes. pyvis.network (librar
 Roberto: Incorporar taxonkit, instalar DFAST de forma manual y usar --no_func_anno para anotar sin comparar en bases de datos. 
 
 
-####Tareas pendientes: 
+#### Tareas pendientes: 
 Leo: Incorporar taxonkit para FTP-download y checkM. DFAST  --no_func_anno
 Activacion de lineas de comandos.
 Potential new clusters for BCGs (non reported) y tiene posee genes interesanes seria bueno incluirlo.
