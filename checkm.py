@@ -2,7 +2,8 @@ import pandas as pd
 import os
 from move_rename import create_folder
 
-def checkm_command(to_filter,checkm_out,rank,taxon):
+
+def checkm_command(to_filter, checkm_out, rank, taxon):
     create_folder(checkm_out)
 
     taxonmywf_command = 'checkm taxonomy_wf -t 8 {} {} {} {}'.format(rank, taxon, to_filter, checkm_out)
@@ -13,7 +14,7 @@ def checkm_command(to_filter,checkm_out,rank,taxon):
     Por lo tanto, utiliza ccomo inputs el archivo '.ms' y la carpeta output del taxonomy_wf
     '''
 
-    #path to ms file and output folder from the taxonomy_wf (output_folder is the same as before)
+    '''path to ms file and output folder from the taxonomy_wf (output_folder is the same as before)'''
     ms_file = '{}/{}.ms'.format(checkm_out, taxon)
     """name and path for the output_file"""
     output_file = '{}/qa_{}.csv'.format(to_filter, taxon)

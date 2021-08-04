@@ -4,12 +4,16 @@ import gzip
 from move_rename import create_folder
 
 
-def unzipfunc(from_folder, to_folder):
-    create_folder('unzip')
+def unzipfunc(from_folder, to_folder,report_dict):
+    create_folder('unzip_vb1')
     for direct, subdir, files in os.walk(from_folder):
         for name in files:
-            full_path = '{}/{}'.format(from_folder, name)
+            #full_path = '{}/{}'.format(os.getcwd(),name)
+            full_path = '{}/{}'.format(direct, name)
             print(full_path)
+            strain_name = direct.split('/')
+            report_dict['strain_name'].append(strain_name[-1])
+            report_dict['Bin Id'].append(name[0:-7])
             final_path = to_folder
             if full_path.endswith(".gz"):
                 try:

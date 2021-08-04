@@ -3,26 +3,20 @@ from move_rename import create_folder
 import pandas as pd
 
 
-def bigscape_func():
-    create_folder('bigscape_output')
+def bigscape_func(input_folder, output_folder, cutoffs):
+    create_folder(output_folder)
+    os.system('bigscape.py -i {} -o {} -v --cutoffs {} --mibig --clans-off'.format(input_folder,output_folder,cutoffs))
 
-    output_folder = '{}/bigscape_output'.format(os.getcwd())
-    bigscape_folder = '{}/for_bigscape'.format(os.getcwd())
-    cutoffs = '0.3 0.6 0.7'
-
-    os.system('bigscape.py -i {} -o {} -v --cutoffs {} --mibig'.format(bigscape_folder,output_folder,cutoffs))
-
-
-def modify_output():
+###revisar!!!
+def modify_output(bigscape_output_folder):
     # definir carpetas
     original_folder = os.getcwd()
-    os.chdir('{}/bigscape_output/network_files'.format(os.getcwd()))
+    os.chdir('{}/network_files'.format(bigscape_output_folder)
     root_dirs = next(os.walk('./'))[1]
     network_folders = str('./' + root_dirs[0])
     all_dirs = next(os.walk(network_folders))[1]
 
     # crear carpetas para cada tipo de BGC
-
     i = 0
     while i < len(all_dirs):
         folder = all_dirs[i] + '_transformed'
@@ -32,7 +26,6 @@ def modify_output():
         # Buscar files para utilizarlos como base para crear la tabla final
         for subdir, dirs, files in os.walk(folder_path):
             for name in files:
-
                 # busar y modificar ".tsv" files
                 if name.startswith("Network") and not name.endswith('Full.tsv'):
                     #current_folder = str(all_dirs[i])
@@ -55,7 +48,6 @@ def modify_output():
                     path = subdir + os.sep + name
 
                     # b:crear dos columnas, Source y Target
-
                     b = pd.read_csv(path, sep='\t')
                     b2 = b.rename(
                         {'Clustername 1': 'Source', 'Clustername 2': 'Target', 'Squared similarity': 'Weight'}, axis=1)

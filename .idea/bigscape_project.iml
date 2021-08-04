@@ -17,6 +17,12 @@
       <excludeFolder url="file://$MODULE_DIR$/bigscape_output_test" />
       <excludeFolder url="file://$MODULE_DIR$/bigscape_output" />
       <excludeFolder url="file://$MODULE_DIR$/antismash_test_out" />
+      <excludeFolder url="file://$MODULE_DIR$/json_files" />
+      <excludeFolder url="file://$MODULE_DIR$/prokka_test" />
+      <excludeFolder url="file://$MODULE_DIR$/vb1" />
+      <excludeFolder url="file://$MODULE_DIR$/dfast_test" />
+      <excludeFolder url="file://$MODULE_DIR$/antismash_annotation_test" />
+      <excludeFolder url="file://$MODULE_DIR$/g11c_test" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.7 (bigscape_project)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

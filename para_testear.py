@@ -1,24 +1,46 @@
+import json
 import os
-from antismash import antismash_func, for_bigscape
-from bigscape_script import bigscape_func, modify_output
-from network import network_visualization_func
 
-#antismash_func()
-#for file in os.listdir('antismash_test_out'):
-#    for_bigscape(file)
+import requests
+
+strain = 'G11C_PacBio_Illumina_Flye_Pilon_09102020'
+
+json_file = requests.get('https://prism.adapsyn.com/api/task/8325cbce7827fa01ade350e14f34bbc1/results/file')
+all_file = json.loads(json_file.text)
 
 
-#bigscape_func()
-modify_output()
+if strain in all_file['prism_results']['input']['filename']:
+    print('here it is')
+    to_search_list = []
+    to_search_init = all_file['prism_results']['clusters']
+    '''[0]['orfs'][0]['sequence']'''
+    #to_search = to_search_init[2::]
+    #to_search = 'QAEGNPLALVELARAADGRE'
+    for i in range(len(to_search_init)):
+        for j in range(len(to_search_init[i]['orfs'])):
+            try:
+                to_search_list.append(to_search_init[i]['orfs'][j]['sequence'])
+            except:
+                print ('doesnt exist')
 
-print(os.getcwd())
-network_folder = '{}/bigscape_output_test/network_files'.format(os.getcwd())
-#network_folder = os.getcwd()
-for folder, subfolder, files in os.walk(network_folder):
-    for i in range(len(subfolder)):
-        if "hybrids" not in subfolder[i] and 'transformed' in subfolder[i]:
-            subfolder_full = '{}/{}'.format(network_folder, subfolder[i])
-            for file in os.listdir(subfolder_full):
-                if 'edges' in file:
-                    file_full_path = '{}/{}'.format(subfolder_full, file)
-                    network_visualization_func(file_full_path)
+
+
+
+folder = 'g11c_test/g11c'
+found_list = 0
+for file in os.listdir(folder):
+    if file.startswith('045') and file.endswith('gbk'):
+        full_path = '{}/{}'.format(folder, file)
+        with open(full_path, 'r') as cluster:
+            count = 0
+            for line in cluster:
+                count += 1
+                for i in range(len(to_search_list)):
+                    if to_search_list[i][1:7] in line or to_search_list[i][-7:-1] in line:
+                        print(file)
+                        print(line)
+                        print (to_search_list[i])
+                        found_list += 1
+
+print (len(to_search_list))
+print (found_list)

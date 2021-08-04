@@ -1,5 +1,6 @@
 import os
 from ftplib import FTP
+from move_rename import create_folder
 
 host_address = 'ftp.ncbi.nlm.nih.gov'
 user_name = 'anonymous'
@@ -9,7 +10,6 @@ ftp.login(user=user_name, passwd=password)
 
 
 def FTP_Walker(FTPpath, localpath):
-
     os.chdir(localpath)
     current_loc = os.getcwd()
     for item in ftp.nlst(FTPpath):
@@ -59,21 +59,27 @@ def ask_strain(strainCollection):
 
 
 def download_file(file_name):
-    ftpwalk = FTP_Walker("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'), os.getcwd())
+    original_dir = os.getcwd()
+    os.chdir('zip')
+    create_folder(file_name)
+    os.chdir(original_dir)
     try:
+        ftpwalk = FTP_Walker("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'), os.getcwd())
         strainName = StrainName("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'))
         full_name = []
         for strain in strainName:
             full_name_strain = strain + '_genomic.fna.gz'
             full_name.append(full_name_strain)
 
+
         for item in ftpwalk:
             for strain in full_name:
                 if strain in item:
                     # it is downloading the file
                     ftp.retrbinary("RETR " + item,
-                                   open(os.path.join(os.getcwd(), 'zip', item.split('/')[-1]), "wb").write)
+                                   open(os.path.join(os.getcwd(), 'zip/{}'.format(file_name), item.split('/')[-1]),
+                                        "wb").write)
                     # it will print the file address
                     print(item)
-    except:
+    except ValueError:
         print("{} strain doesn't exist on refseq".format(file_name))

@@ -10,3 +10,8 @@
 /unzip/
 /venv/
 /zip/
+/prokka_test/
+/dfast_test/
+/antismash_annotation_test/
+/vb1/
+/g11c_test/
