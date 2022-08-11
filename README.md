@@ -7,14 +7,14 @@ Complete workflow from genome download to BGC network visualization
 *  Paso 1: Descargar desde genomas (###.fna) de bacterias FTP "Streptomyces"
 *  Paso 2: Verificar calidad de genomas usando CheckM
 *  Paso 3: Anotacion parcial de ###.fna para obtener ###.gbk (sin comparacion a bases de datos)
-*  Paso 4: Anotacion mediante Antismash v.5.2 para obtener ####.gbk de cada genoma descargado
+*  Paso 4: Anotacion mediante Antismash v.6.0 para obtener ####.gbk de cada genoma descargado
 *  Paso 5: Creacion de redes de similitud mediante BigSCAPE v.1.0.2 para obtener archivos nodes.csv y edges.csv
 *  Paso 6: Visualizacion mediante programa no tan bueno como Gephi
 
 Mejoras pendientes:
-* -Incluir CheckM al workflow
+
 * -Identificar taxonomicamente phylum:class:order:family:genus:species de cada genero y especie para darle el taxon superior a checkM
-* -Contar ">" para filtro de numero de contigs
+
 * -Anotacion parcial, solo realizar hasta identificacion de CDS, no comparar con bases de datos
 * -Antismash agregar workflow basico (solo .gbk) o completo ClusterBlast visualizacion del index.html
 * -Agregar visualizador de nodes.cdv y edges.csv
