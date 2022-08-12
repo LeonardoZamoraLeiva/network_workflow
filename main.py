@@ -35,7 +35,7 @@ def main():
     parser.add_option('-a', '--antismash', action='store_true', dest='antismash', help='do antismash')
     parser.add_option('-b', '--bigscape', action='store_true', dest='bigscape', help='do bigscape')
     parser.add_option('--bigscape_cutoffs', dest='cutoff', default='0.6', help='cutoffs for bigscape. "0.3, 0.6, 0.9" Default = 0.6', metavar=None)
-    parser.add_option('-v', '--visual', dest='visualization', default='store_true', help='Simple visualization output for bigscape run', metavar='Visualization')
+    parser.add_option('-v', '--visual', dest='visualization', action='store_true', help='Simple visualization output for bigscape run', metavar='Visualization')
 
     (options,args) = parser.parse_args()
 
@@ -116,6 +116,7 @@ def main():
     new_unzip_func(download_folder, unzip_folder, strain_of_analysis)
 
     #checkM and quast quality test. Also merge them on a single file
+    strains_that_pass = ''
     if options.quality:
         if options.taxon and options.rank:
             taxon = options.taxon
@@ -200,9 +201,9 @@ def main():
     # bigscape run
     if options.bigscape:
         for folder in os.listdir(antismash_folder):
-            for_bigscape(folder, for_bigscape_folder, antismash_folder)
-            bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
-            modify_output(bigscape_output_folder, 'domains.csv')
+            #for_bigscape(folder, for_bigscape_folder, antismash_folder)
+            #bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
+            #modify_output(bigscape_output_folder, 'domains.csv')
             modify_output(bigscape_output_folder)
 
     

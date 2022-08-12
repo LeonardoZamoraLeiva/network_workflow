@@ -1,0 +1,121 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 50%;
+            height: 600px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "BGC0000999.1", "label": "BGC0000999.1", "shape": "dot", "title": "BGC0000999.1 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0001435.1\u003cbr\u003eBGC0001556.1", "value": 7}, {"id": "BGC0001556.1", "label": "BGC0001556.1", "shape": "dot", "title": "BGC0001556.1 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0000999.1", "value": 6}, {"id": "BGC0001435.1", "label": "BGC0001435.1", "shape": "dot", "title": "BGC0001435.1 Neighbors:\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001043.1", "value": 4}, {"id": "NZ_JNXG01000011.region002", "label": "NZ_JNXG01000011.region002", "shape": "dot", "title": "NZ_JNXG01000011.region002 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0001435.1\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0001556.1", "value": 7}, {"id": "BGC0000996.1", "label": "BGC0000996.1", "shape": "dot", "title": "BGC0000996.1 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0001435.1\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0001556.1", "value": 7}, {"id": "BGC0001726.1", "label": "BGC0001726.1", "shape": "dot", "title": "BGC0001726.1 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0001556.1", "value": 6}, {"id": "BGC0001043.1", "label": "BGC0001043.1", "shape": "dot", "title": "BGC0001043.1 Neighbors:\u003cbr\u003eBGC0000996.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0001553.1\u003cbr\u003eBGC0001435.1\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0001556.1", "value": 7}, {"id": "BGC0000325.1", "label": "BGC0000325.1", "shape": "dot", "title": "BGC0000325.1 Neighbors:\u003cbr\u003eNZ_JNXG01000010.region001", "value": 1}, {"id": "NZ_JNXG01000010.region001", "label": "NZ_JNXG01000010.region001", "shape": "dot", "title": "NZ_JNXG01000010.region001 Neighbors:\u003cbr\u003eBGC0000325.1", "value": 1}, {"id": "BGC0001553.1", "label": "BGC0001553.1", "shape": "dot", "title": "BGC0001553.1 Neighbors:\u003cbr\u003eBGC0001043.1\u003cbr\u003eBGC0000996.1\u003cbr\u003eBGC0001726.1\u003cbr\u003eNZ_JNXG01000011.region002\u003cbr\u003eBGC0000999.1\u003cbr\u003eBGC0001556.1", "value": 6}, {"id": "BGC0000392.1", "label": "BGC0000392.1", "shape": "dot", "title": "BGC0000392.1 Neighbors:\u003cbr\u003eNZ_JNXG01000010.region003", "value": 1}, {"id": "NZ_JNXG01000010.region003", "label": "NZ_JNXG01000010.region003", "shape": "dot", "title": "NZ_JNXG01000010.region003 Neighbors:\u003cbr\u003eBGC0000392.1", "value": 1}]);
+        edges = new vis.DataSet([{"from": "BGC0000999.1", "to": "BGC0001556.1", "value": 0.2752918601036072}, {"from": "BGC0001435.1", "to": "NZ_JNXG01000011.region002", "value": 0.3115496337413788}, {"from": "BGC0000996.1", "to": "BGC0001556.1", "value": 0.2762351334095001}, {"from": "BGC0000999.1", "to": "NZ_JNXG01000011.region002", "value": 0.31962838768959045}, {"from": "BGC0001556.1", "to": "BGC0001726.1", "value": 0.2859357893466949}, {"from": "BGC0000996.1", "to": "BGC0000999.1", "value": 0.33336296677589417}, {"from": "BGC0001043.1", "to": "BGC0001556.1", "value": 0.29827773571014404}, {"from": "BGC0001726.1", "to": "NZ_JNXG01000011.region002", "value": 0.7436677813529968}, {"from": "BGC0001043.1", "to": "BGC0001435.1", "value": 0.4010895490646362}, {"from": "BGC0001043.1", "to": "BGC0001726.1", "value": 0.3788031041622162}, {"from": "BGC0001043.1", "to": "NZ_JNXG01000011.region002", "value": 0.37926143407821655}, {"from": "BGC0000325.1", "to": "NZ_JNXG01000010.region001", "value": 0.5547911524772644}, {"from": "BGC0001043.1", "to": "BGC0001553.1", "value": 0.428703248500824}, {"from": "BGC0001553.1", "to": "BGC0001726.1", "value": 0.2958212494850159}, {"from": "BGC0000999.1", "to": "BGC0001043.1", "value": 0.4000920951366425}, {"from": "BGC0000999.1", "to": "BGC0001435.1", "value": 0.3030247092247009}, {"from": "BGC0000996.1", "to": "NZ_JNXG01000011.region002", "value": 0.37866461277008057}, {"from": "BGC0000999.1", "to": "BGC0001553.1", "value": 0.36799705028533936}, {"from": "BGC0000392.1", "to": "NZ_JNXG01000010.region003", "value": 0.21982477605342865}, {"from": "BGC0001553.1", "to": "BGC0001556.1", "value": 0.2637217938899994}, {"from": "BGC0000996.1", "to": "BGC0001435.1", "value": 0.3266412019729614}, {"from": "BGC0001556.1", "to": "NZ_JNXG01000011.region002", "value": 0.3027435541152954}, {"from": "BGC0000999.1", "to": "BGC0001726.1", "value": 0.3859378695487976}, {"from": "BGC0000996.1", "to": "BGC0001043.1", "value": 0.4330441653728485}, {"from": "BGC0001553.1", "to": "NZ_JNXG01000011.region002", "value": 0.2959429919719696}, {"from": "BGC0000996.1", "to": "BGC0001726.1", "value": 0.37520790100097656}, {"from": "BGC0000996.1", "to": "BGC0001553.1", "value": 0.3566328883171081}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": true
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
