@@ -4,17 +4,21 @@ from pyvis.network import Network
 
 def network_visualization_func(file):
     print('{} will be representated as an network HTML file'.format(file))
+    print(file)
     output_name = file[0:-4]
     net = Network(width='100%', height='600px', notebook=True)
-    df = pd.read_csv(file)
+    df = pd.read_csv(file,delimiter='\t')
+    print (df)
     sources = df['Source']
     targets = df['Target']
     weights = df['Weight']
-    edge_data = zip(sources, targets, weights)
+    domains = df['Domains']
+    edge_data = zip(sources, targets, weights,domains)
     for e in edge_data:
         src = e[0]
         dst = e[1]
         w = e[2]
+        dom = e[3]
         net.add_node(src, src, title=src)
         net.add_node(dst, dst, title=dst)
         net.add_edge(src, dst, value=w)

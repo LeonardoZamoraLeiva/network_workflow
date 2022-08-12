@@ -1,3 +1,4 @@
+import ftplib
 import os
 from ftplib import FTP
 from move_rename import create_folder
@@ -9,23 +10,6 @@ ftp = FTP(host_address)
 ftp.login(user=user_name, passwd=password)
 
 
-def FTP_Walker(FTPpath, localpath):
-    os.chdir(localpath)
-    current_loc = os.getcwd()
-    for item in ftp.nlst(FTPpath):
-        if not is_file(item):
-            yield from FTP_Walker(item, current_loc)
-
-        elif is_file(item):
-            yield item
-            current_loc = localpath
-        else:
-            print('this is a item that i could not process')
-
-    os.chdir(localpath)
-    return
-
-
 def StrainName(FTPpath):
     strain_name = []
     for item in range(len(ftp.nlst(FTPpath))):
@@ -33,18 +17,6 @@ def StrainName(FTPpath):
         strain = listPath[5]
         strain_name.append(strain)
     return strain_name
-
-
-def is_file(filename):
-    current = ftp.pwd()
-    try:
-        ftp.cwd(filename)
-    except Exception as e:
-        ftp.cwd(current)
-        return True
-
-    ftp.cwd(current)
-    return False
 
 
 def ask_strain(strainCollection):
@@ -58,28 +30,39 @@ def ask_strain(strainCollection):
             strains = True
 
 
-def download_file(file_name):
+def download_file(main_folder, file_name):
     original_dir = os.getcwd()
-    os.chdir('zip')
+    os.chdir('{}'.format(main_folder))
     create_folder(file_name)
-    os.chdir(original_dir)
+
     try:
-        ftpwalk = FTP_Walker("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'), os.getcwd())
+        ftpwalk = ftp.nlst("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'))
         strainName = StrainName("genomes/refseq/bacteria/{}/{}".format(file_name, 'latest_assembly_versions'))
+
         full_name = []
         for strain in strainName:
             full_name_strain = strain + '_genomic.fna.gz'
             full_name.append(full_name_strain)
 
-
         for item in ftpwalk:
-            for strain in full_name:
-                if strain in item:
+            for j in full_name:
+                if j[0:-15] in item:
                     # it is downloading the file
-                    ftp.retrbinary("RETR " + item,
-                                   open(os.path.join(os.getcwd(), 'zip/{}'.format(file_name), item.split('/')[-1]),
-                                        "wb").write)
-                    # it will print the file address
-                    print(item)
-    except ValueError:
-        print("{} strain doesn't exist on refseq".format(file_name))
+                    full_path = '{}/{}'.format(item, j)
+                    try:
+                        ftp.retrbinary("RETR " + full_path,
+                                       open(os.path.join(os.getcwd(), file_name, full_path.split('/')[-1]),
+                                            "wb").write)
+                        # it will print the file address
+                        print(full_path)
+                    except ftplib.error_perm:
+                        print('aca esta el error')
+
+    except ftplib.error_temp as resp:
+        if str(resp) == '450 No such file or directory':
+            print('No files in this directory')
+        else:
+            raise
+
+
+    os.chdir(original_dir)

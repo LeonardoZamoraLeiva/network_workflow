@@ -1,46 +1,125 @@
-import json
+from Bio import SeqIO
 import os
-
+import json
 import requests
+import csv
+import pandas as pd
 
+def diamond_func(query_fasta, faa_file, output_file):
+    # create_folder(output_folder)
+    os.system(
+        'diamond blastp --quiet --id 90 --query-cover 95 -d {} -q {} -o {}'
+            .format(query_fasta, faa_file, output_file))
+
+
+def from_json_extract_files(prism_report):
+    to_search_dict = {}
+    if strain in all_file['prism_results']['input']['filename']:
+        to_search_init = prism_report['prism_results']['clusters']
+        count = 0
+        for i in range(len(to_search_init)):
+            for j in range(len(to_search_init[i]['orfs'])):
+                try:
+                    if len(to_search_init[i]['orfs'][j]['domains']) > 0:
+                        domains_list = []
+                        for d in range(len(to_search_init[i]['orfs'][j]['domains'])):
+                            domains_list.append(to_search_init[i]['orfs'][j]['domains'][d]['clean_name'])
+                            to_search_dict[to_search_init[i]['orfs'][j]['sequence']] = domains_list
+                except:
+                    print ('doesnt exist')
+    return to_search_dict
+
+
+def create_faa_from_gbk(gbk_filename,faa_filename):
+    input_handle  = open(gbk_filename, 'r')
+    output_handle = open(faa_filename, 'w')
+    #print (input_handle)
+    for seq_record in SeqIO.parse(input_handle, 'genbank'):
+        print ("Dealing with GenBank record %s"% seq_record.id)
+        for seq_feature in seq_record.features :
+            if seq_feature.type=="CDS" :
+                assert len(seq_feature.qualifiers['translation'])==1
+                output_handle.write(">%s from %s\n%s\n" % (
+                       seq_feature.qualifiers['locus_tag'][0],
+                       seq_record.name,
+                       seq_feature.qualifiers['translation'][0]))
+    output_handle.close()
+    input_handle.close()
+
+
+def antismash_json_compare(antismash_folder, sequences_to_compare_folder, output_folder):
+    for faa in os.listdir(antismash_folder):
+        if faa.endswith('faa'):
+            for sequence in os.listdir(sequences_to_compare_folder):
+                faa_path = '{}/{}'.format(antismash_folder, faa)
+                sequence_path = '{}/{}'.format(sequences_to_compare_folder, sequence)
+                out_file = '{}_{}.tsv'.format(sequence[0:-6], faa[0:-4])
+                print (out_file)
+                diamond_func(sequence_path, faa_path, '{}/{}'.format(output_folder, out_file))
+                if os.stat('{}/{}'.format(output_folder, out_file)).st_size==0:
+                    os.remove('{}/{}'.format(output_folder, out_file))
+
+
+'''Obtain json file from PRISM page'''
 strain = 'G11C_PacBio_Illumina_Flye_Pilon_09102020'
-
 json_file = requests.get('https://prism.adapsyn.com/api/task/8325cbce7827fa01ade350e14f34bbc1/results/file')
 all_file = json.loads(json_file.text)
 
+'''Extract sequence files from PRISM json file and the to_search_dict '''
+to_search_dict = from_json_extract_files(all_file)
 
-if strain in all_file['prism_results']['input']['filename']:
-    print('here it is')
-    to_search_list = []
-    to_search_init = all_file['prism_results']['clusters']
-    '''[0]['orfs'][0]['sequence']'''
-    #to_search = to_search_init[2::]
-    #to_search = 'QAEGNPLALVELARAADGRE'
-    for i in range(len(to_search_init)):
-        for j in range(len(to_search_init[i]['orfs'])):
-            try:
-                to_search_list.append(to_search_init[i]['orfs'][j]['sequence'])
-            except:
-                print ('doesnt exist')
+'''Create fasta files to compare with diamond'''
+number_domain_dict = {}
+count = 0
+for key in to_search_dict:
+    count += 1
+    with open('for_test/sequences/{}.fasta'.format(count), 'w') as f:
+        f.write('>{}\n{}'.format(count, key))
+        number_domain_dict[count] = to_search_dict[key]
 
-
+print(number_domain_dict)
+'''Create faa from antismash gbk to usen on diamond
 
 
-folder = 'g11c_test/g11c'
-found_list = 0
-for file in os.listdir(folder):
-    if file.startswith('045') and file.endswith('gbk'):
-        full_path = '{}/{}'.format(folder, file)
-        with open(full_path, 'r') as cluster:
-            count = 0
-            for line in cluster:
-                count += 1
-                for i in range(len(to_search_list)):
-                    if to_search_list[i][1:7] in line or to_search_list[i][-7:-1] in line:
-                        print(file)
-                        print(line)
-                        print (to_search_list[i])
-                        found_list += 1
+antismash_dir = 'for_test/g11c_antismash'
+for file in os.listdir(antismash_dir):
+    if file.endswith('.gbk'):
+        gbk_filename = '{}/{}'.format(antismash_dir, file)
+        faa_filename = '{}/{}.faa'.format(antismash_dir,file[0:-4])
+        create_faa_from_gbk(gbk_filename,faa_filename)
 
-print (len(to_search_list))
-print (found_list)
+Compare sequences from json with antismash to find hits and create output
+antismash_folder = 'for_test/g11c_antismash'
+sequences_to_compare_folder = 'for_test/sequences'
+output_folder_diamond = 'for_test/results_diamond'
+antismash_json_compare(antismash_folder, sequences_to_compare_folder,output_folder_diamond)
+'''
+
+files_dict = {}
+for result in os.listdir('for_test/results_diamond'):
+    #print(result.split('_')[0])
+    key_lists = list(number_domain_dict.values())
+    key = int(result.split('_')[0])
+    print(result.split('_',1)[1][0:-4])
+
+    if result.split('_',1)[1][0:-4] not in list(files_dict.keys()):
+        files_dict[result.split('_',1)[1][0:-4]] = number_domain_dict[key]
+    else:
+        files_dict[result.split('_', 1)[1][0:-4]].append(number_domain_dict[key])
+
+print (files_dict)
+
+header = ['Source','Domains']
+with open('for_test/test.csv', 'w') as f:
+    file_writter = csv.writer(f, delimiter= ',')
+    file_writter.writerow(header)
+    for key,value in files_dict.items():
+        file_writter.writerow([key,value])
+
+df1 = pd.read_csv('for_test/test.csv',delimiter='\t')
+df2 = pd.read_csv('for_test/NRPS_c0.3_edges.csv',usecols=['Source', 'Target', 'Weight', 'Raw distance'])
+df3 = pd.merge(df1, df2, on=['Source'],how='outer')
+df3.to_csv('for_test/merge_test.csv', index=False, sep='\t')
+print(df3)
+
+
