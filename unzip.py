@@ -1,30 +1,34 @@
 import os
 import shutil
 import gzip
-from move_rename import create_folder
+import pandas as pd
 
 
-def unzipfunc(from_folder, to_folder,report_dict):
-    create_folder('unzip_vb1')
-    for direct, subdir, files in os.walk(from_folder):
-        for name in files:
-            #full_path = '{}/{}'.format(os.getcwd(),name)
-            full_path = '{}/{}'.format(direct, name)
-            print(full_path)
-            strain_name = direct.split('/')
-            report_dict['strain_name'].append(strain_name[-1])
-            report_dict['Bin Id'].append(name[0:-7])
-            final_path = to_folder
-            if full_path.endswith(".gz"):
-                try:
-                    with gzip.open(full_path, 'rb') as f_in:
+# To unzip files. This func. can continue even with problems in the unziping
+# This list store the files that cant be unziped to download them manually if necessary
+def new_unzip_func(from_folder, to_folder, strain_of_analysis):
+    not_unzip_list = []
+    species_strain_list = [('species', 'strain')]
+    for dir, subdir, file in os.walk(from_folder):
+        for i in file:
+            species = dir.split('/')[-1]
+            strain = i[0:-7]
+            # Here we store the tuple combination of species and strain to easy lecture file
+            comb_species_strain = (species, strain)
+            species_strain_list.append(comb_species_strain)
+            with gzip.open('{}/{}'.format(dir, i), 'rb') as f_in:
+                with open('{}/{}'.format(to_folder, i[0:-3]), 'wb') as f_out:
+                    try:
+                        shutil.copyfileobj(f_in, f_out)
+                    except:
+                        not_unzip_list.append('{}/{}'.format(dir, i))
+                    f_in.close()
+                    f_out.close()
 
-                        with open(to_folder + '/' + name[0:-3], 'wb') as f_out:
-                            shutil.copyfileobj(f_in, f_out)
-
-                        f_in.close()
-                        f_out.close()
-                        print('File {} will be uncompress to {} under the name of {}'.format(full_path, final_path,
-                                                                                             f_out.name))
-                except:
-                    print("Can't unzip the file {}".format(full_path))
+    if len(not_unzip_list) > 0:
+        print(not_unzip_list)
+    else:
+        print("All files were unziped successfully")
+    # Here we generate the strains file (with the respective species name)
+    df = pd.DataFrame(species_strain_list)
+    df.to_csv('{}/all_strains.csv'.format(strain_of_analysis), header=False, index=False)
