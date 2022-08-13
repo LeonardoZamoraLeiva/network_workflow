@@ -15,7 +15,3 @@ def prokkafunc(strain, from_folder,prokka_out,prokka_gbks):
             create_folder(prokka_gbks)
             to_folder = '{}/{}.gbk'.format(prokka_gbks, strain)
             move_rename(output_folder, to_folder)
-
-    else:
-        print()
-

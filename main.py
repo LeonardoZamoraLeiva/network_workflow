@@ -11,7 +11,7 @@ from network import network_visualization_func
 from move_rename import create_folder
 import pandas as pd
 from domains import from_json_extract_files, create_faa_from_gbk, antismash_json_compare
-import requests
+#import requests
 import json
 import csv
 
@@ -201,9 +201,9 @@ def main():
     # bigscape run
     if options.bigscape:
         for folder in os.listdir(antismash_folder):
-            #for_bigscape(folder, for_bigscape_folder, antismash_folder)
-            #bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
-            #modify_output(bigscape_output_folder, 'domains.csv')
+            for_bigscape(folder, for_bigscape_folder, antismash_folder)
+            bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
+            modify_output(bigscape_output_folder, 'domains.csv')
             modify_output(bigscape_output_folder)
 
     

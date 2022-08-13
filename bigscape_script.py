@@ -57,23 +57,5 @@ def modify_output(bigscape_output_folder):
                     name_final_b = '{}/{}_{}_edges.csv'.format(folder, all_dirs[i], name[-13:-9])
                     b3.to_csv(name_final_b, index=False)
 
-
-            '''for file in os.listdir(folder):
-                if file.endswith('edges.csv'):
-                    try:
-                        #print(folder)
-                        #print(file)
-                        cutoff = file.split('_')[1]
-                        # Modificar, agregar en modify_output para generar todos los archivos.
-                        df1 = pd.read_csv('{}/G11C/{}'.format(original_folder, domains_csv_file), delimiter=',')
-                        df2 = pd.read_csv('{}/{}'.format(folder, file), delimiter=',')
-                        df3 = pd.merge(df1, df2, on=['Source'], how='outer')
-                        df3.to_csv('{}/{}_edges_domains.csv'.format(folder, cutoff), index=False, sep='\t')
-                        print(file)
-                    except ValueError:
-                        print('cant create this file')'''
         i += 1
     os.chdir(original_folder)
-
-
-

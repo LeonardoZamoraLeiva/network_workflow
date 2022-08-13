@@ -64,5 +64,4 @@ def download_file(main_folder, file_name):
         else:
             raise
 
-
     os.chdir(original_dir)
