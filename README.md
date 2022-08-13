@@ -2,12 +2,12 @@
 Complete workflow from genome download to BGC network visualization
 ## Instalation
 pending....
-##About this tool
+## About this tool
 This tool is a pipeline created to facilitate the steps that are needed to generate BGC networks with BiG-SCAPE.
 It is capable of download 'n' genomes from refseq, evaluate their quality, annotate them, run antiSMASH on them and finnaly uses this BGCs to generate BiG-SCAPE networks.
 Can run every step independently, so can be uses for specific needs.
 
-##Available options
+## Available options
 Options:
   -h, --help            show this help message and exit
   -i file.csv, --input=file.csv
@@ -39,7 +39,7 @@ Options:
   -v, --visual          Simple visualization output for bigscape run as an HTML file
 
 
-##Future improvements
+## Future improvements
 - Make it faster by simplifying some analysis 
 - Addition several other annotators (like D-fast) as options
 - Add feature display on the visualization file
