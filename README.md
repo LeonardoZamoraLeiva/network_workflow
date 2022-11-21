@@ -9,7 +9,7 @@ Can run every step independently, so can be uses for specific needs.
 
 ## Available options
 Options:
-  -h, --help            show this help message and exit
+  -h, --help            show this help message and exit \n
   -i file.csv, --input=file.csv
                         Csv file with strains to dowload
   -o Folder, --out=Folder
