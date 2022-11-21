@@ -9,11 +9,11 @@ Can run every step independently, so can be uses for specific needs.
 
 ## Available options
 Options:
-  -h, --help            show this help message and exit \n
-  -i file.csv, --input=file.csv
-                        Csv file with strains to dowload
-  -o Folder, --out=Folder
-                        Output folder
+  -h, --help            show this help message and exit.
+  -i file.csv, --input=file.csv.
+                        Csv file with strains to dowload.
+  -o Folder, --out=Folder.
+                        Output folder.
   -d Visualization, --download=Visualization
                         Allows the download from refseq database
   -q, --quality         determine quality of given genomes
