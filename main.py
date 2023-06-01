@@ -2,7 +2,7 @@ import os
 from optparse import OptionParser
 from ftplib import FTP
 from ftp_conection import download_file
-from unzip import new_unzip_func
+from unzip import new_unzip_func, create_strains_file
 from checkm import checkm_command, filter_strains, quast_quality,merge_quality_checkM_quast
 from prokka import prokkafunc
 from antismash import antismash_func, for_bigscape
@@ -18,11 +18,10 @@ import csv
 
 def main():
     parser = OptionParser()
-    parser.add_option('-i', '--input', dest='input', help='Csv file with strains to dowload',metavar='file.csv')
+    parser.add_option('-i', '--input', dest ='input', help='Csv file with strains to dowload',metavar='file.csv')
     parser.add_option('-o', '--out', dest='output', help='Output folder', metavar='Folder')
-    parser.add_option('-d', '--download', dest='download', help='Allows the download from refseq database', metavar='Visualization')
-
-    parser.add_option('-q', '--quality', dest='quality', help='determine quality of given genomes', action='store_true')
+    parser.add_option('-d', '--download', action='store_true', dest='download', help='Allows the download from refseq database', metavar='Download')
+    parser.add_option('-q', '--quality', action='store_true', dest='quality', help='determine quality of given genomes')
     parser.add_option('-r', '--rank', dest='rank', help='rank for comparison (genus, family, order, class, phylum, kingdom, domain', metavar='Rank')
     parser.add_option('-t', '--taxon', dest='taxon', help='eg. Streptomyces', metavar='Taxon')
     parser.add_option('--completness', dest='completness', default=98,
@@ -31,7 +30,7 @@ def main():
                       metavar='contig_number')
     parser.add_option('--contamination', dest='contamination', default=5,
                       help='Maximum contamination percentage accepted to pass the quality check', metavar='contamination')
-    parser.add_option('-n', '--annotation', dest='annotation', default='prokka', help='annotate the genome with the assigned annotator (prokka,dfast,etc). Default = prokka', metavar='annotation')
+    parser.add_option('-n', '--annotation', dest='annotation', action='store_true', help='annotate the genome with the assigned annotator (prokka,dfast,etc). Default = prokka', metavar='annotation')
     parser.add_option('-a', '--antismash', action='store_true', dest='antismash', help='do antismash')
     parser.add_option('-b', '--bigscape', action='store_true', dest='bigscape', help='do bigscape')
     parser.add_option('--bigscape_cutoffs', dest='cutoff', default='0.6', help='cutoffs for bigscape. "0.3, 0.6, 0.9" Default = 0.6', metavar=None)
@@ -83,14 +82,14 @@ def main():
         my_file.close()
 
         for j in range(len(strainCollection)):
-            print('Nos estamos conectando a refseq')
+            print('Nos estamos conectando a refseq')            
             for i in ftp.nlst('genomes/refseq/bacteria'):
                 if strainCollection[j] in i:
-                    strepto_list = i.split(sep='/')
-                    strepto_ftp.append(strepto_list[-1])
+                   strepto_list = i.split(sep='/')
+                   strepto_ftp.append(strepto_list[-1])
             ftp.close()
-        print(strainCollection)
-        print(len(strepto_ftp))
+            print(strainCollection)
+
         # here it hast to interset either list that is used as input: strainCollection or strain_list
         list_interc = intersection(strainCollection, strepto_ftp)
 
@@ -112,10 +111,19 @@ def main():
 
     # Unzip donwloaded files, analyze qualtity and filter
     #Unzip and move files
-    create_folder(unzip_folder)
-    new_unzip_func(download_folder, unzip_folder, strain_of_analysis)
-
+        create_folder(unzip_folder)
+        new_unzip_func(download_folder, unzip_folder, strain_of_analysis)
+        
     #checkM and quast quality test. Also merge them on a single file
+    strainFile = False
+    for file in os.listdir(strain_of_analysis):
+        if file == 'all_strains.csv':
+            strainFile = True
+    
+    if strainFile == False:
+        create_folder(unzip_folder)
+        create_strains_file(strain_of_analysis, unzip_folder)
+    
     strains_that_pass = ''
     if options.quality:
         if options.taxon and options.rank:
@@ -139,8 +147,10 @@ def main():
                 prokkafunc(strain, unzip_folder, prokka_results_folder, prokka_gbks_folder)
             except ValueError:
                 print("{} can't be annotated".format(strain))
-    
+
+
     # antiSMASH analysis
+    if options.antismash:
         create_folder(antismash_folder)
         antismash_func(prokka_gbks_folder, antismash_folder)
 
@@ -200,11 +210,12 @@ def main():
     '''
     # bigscape run
     if options.bigscape:
+        create_folder(for_bigscape_folder)
         for folder in os.listdir(antismash_folder):
-            for_bigscape(folder, for_bigscape_folder, antismash_folder)
-            bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
-            modify_output(bigscape_output_folder, 'domains.csv')
-            modify_output(bigscape_output_folder)
+            for_bigscape(folder, for_bigscape_folder, antismash_folder, project_folder)
+        
+        bigscape_func(for_bigscape_folder, bigscape_output_folder, cutoffs)
+        modify_output(bigscape_output_folder)
 
     
     # Network visualization

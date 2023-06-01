@@ -5,7 +5,8 @@ import pandas as pd
 
 def bigscape_func(input_folder, output_folder, cutoffs):
     create_folder(output_folder)
-    os.system('bigscape.py -i {} -o {} -v --cutoffs {} --mibig --mix --clans-off'.format(input_folder,output_folder,cutoffs))
+    #os.system('bigscape.py -i {} -o {} -v --cutoffs {} --mibig --mix --clans-off'.format(input_folder,output_folder,cutoffs))
+    os.system('bigscape.py -i {} -o {} -v --cutoffs 0.3 0.6 --mibig --mix --clans-off'.format(input_folder,output_folder))
 
 ###revisar!!!
 #def modify_output(bigscape_output_folder,domains_csv_file):

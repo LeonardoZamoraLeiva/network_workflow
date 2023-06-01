@@ -9,7 +9,7 @@ def prokkafunc(strain, from_folder,prokka_out,prokka_gbks):
     if strain not in os.listdir(prokka_out):
         create_folder(prokka_out)
         if strain_full in os.listdir(from_folder):
-            prokka = 'prokka --outdir {} {}'.format(output_folder, input_file)
+            prokka = 'prokka --cpus 0 --outdir {} {}'.format(output_folder, input_file)
             print(prokka)
             os.system(prokka)
             create_folder(prokka_gbks)
