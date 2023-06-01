@@ -7,7 +7,7 @@ pending....
 ## About this tool
 This tool is a pipeline created to facilitate the necessary steps for generating BGC networks with BiG-SCAPE. It is capable of downloading 'n' genomes from RefSeq, evaluating their quality, annotating them, running antiSMASH, and finally using these BGCs to generate BiG-SCAPE networks. Each step can be executed independently, making it suitable for specific needs.
 
-## Opciones disponibles
+## Available options
 
 | Opción                         | Descripción                                                                                     |
 |--------------------------------|-------------------------------------------------------------------------------------------------|
