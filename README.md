@@ -4,33 +4,32 @@ Complete workflow from genome download to BGC network visualization
 ## Instalation
 pending....
 
-## Acerca de esta herramienta
-Esta herramienta es una tubería creada para facilitar los pasos necesarios para generar redes de BGC con BiG-SCAPE.
-Es capaz de descargar 'n' genomas de RefSeq, evaluar su calidad, anotarlos, ejecutar antiSMASH y finalmente utilizar estos BGC para generar redes de BiG-SCAPE.
-Cada paso se puede ejecutar de forma independiente, lo que la hace adecuada para necesidades específicas.
+## About this tool
+This tool is a pipeline created to facilitate the necessary steps for generating BGC networks with BiG-SCAPE. It is capable of downloading 'n' genomes from RefSeq, evaluating their quality, annotating them, running antiSMASH, and finally using these BGCs to generate BiG-SCAPE networks. Each step can be executed independently, making it suitable for specific needs.
 
 ## Opciones disponibles
-Opciones:
-- -h, --help: muestra este mensaje de ayuda y sale
-- -i file.csv, --input=file.csv: archivo CSV con cepas para descargar
-- -o Carpeta, --out=Carpeta: carpeta de salida
-- -d Visualización, --download=Visualización: permite la descarga desde la base de datos de RefSeq
-- -q, --quality: determina la calidad de los genomas proporcionados
-- -r Rango, --rank=Rango: rango para la comparación (género, familia, orden, clase, filo, reino, dominio)
-- -t Taxon, --taxon=Taxon: por ejemplo, Streptomyces
-- --completness=completness: completitud mínima aceptada para pasar la verificación de calidad
-- --contigs=contig_number: número máximo de contigs aceptados para pasar la verificación de calidad
-- --contamination=contamination: porcentaje máximo de contaminación aceptado para pasar la verificación de calidad
-- -n anotación, --annotation=anotación: anota el genoma con el anotador asignado (prokka, dfast, etc.). Por defecto: prokka
-- -a, --antismash: ejecuta antiSMASH
-- -b, --bigscape: ejecuta BiG-SCAPE
-- --bigscape_cutoffs=CUTOFF: umbrales para BiG-SCAPE. "0.3, 0.6, 0.9". Por defecto: 0.6
-- -v, --visual: salida de visualización simple para BiG-SCAPE como un archivo HTML
 
-## Mejoras futuras
-- Hacerlo más rápido simplificando algunos análisis
-- Agregar varios otros anotadores (como D-fast) como opciones
-- Agregar visualización de características en el archivo de visualización
+| Opción                         | Descripción                                                                                     |
+|--------------------------------|-------------------------------------------------------------------------------------------------|
+| -h, --help                     | Shows help message                                                            |
+| -i file.csv, --input=file.csv  | input csv file with the strains or genera to download                                                           |
+| -o folder, --out=folder      | Output folder                                                                               |
+| -d download, --download=Download | Allows the download from RefSeq database                                 |
+| -q, --quality                  | Allows the quality filter from checkM and Quast softwares                                              |
+| -r Rank, --rank=rank         | Rank for comparison (genera, family, order, class, phylum, kingdom, domain)                  |
+| -t Taxon, --taxon=Taxon        | For example, Streptomyces                                                                       |
+| --completness=completness      | Minimum completeness to pass the quality filter                                |
+| --contigs=contig_number        | Maximum contig number allow to pass the quality filter                        |
+| --contamination=contamination  | Maximum contamination percentage to pass the quality filter               |
+| -n annotation, --annotation=annotation | Allows the annotation with the assign software (prokka, dfast, etc.). Default: Prokka   |
+| -a, --antismash                | Allows antiSMASH                                                                               |
+| -b, --bigscape                 | Allows BiG-SCAPE                                                                               |
+| --bigscape_cutoffs=CUTOFF      | BiG-SCAPE network cutoffs. "0.3, 0.6, 0.9". Por defecto: 0.6                                      |
+| -v, --visual                   | Allows visualization from BiG-SCAPE output to an HTML file                              |
 
+## Future improvements
+- Enhance speed by simplifying some analyses
+- Add several other annotators (such as D-fast) as options
+- Incorporate feature visualization in the visualization file
 
 
