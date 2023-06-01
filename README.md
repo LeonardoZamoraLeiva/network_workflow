@@ -1,36 +1,36 @@
 # NetworkWorkflow
 Complete workflow from genome download to BGC network visualization
+
 ## Instalation
 pending....
-## About this tool
-This tool is a pipeline created to facilitate the steps that are needed to generate BGC networks with BiG-SCAPE.<br>
-It is capable of download 'n' genomes from refseq, evaluate their quality, annotate them, run antiSMASH on them and finnaly uses this BGCs to generate BiG-SCAPE networks.<br>
-Can run every step independently, so can be uses for specific needs.
 
-## Available options
-Options: <br>
--h, --help -------------------------------------- show this help message and exit</br>
-  -i file.csv, --input=file.csv --------------------- Csv file with strains to dowload<br>
-  -o Folder, --out=Folder ----------------------- Output folder<br>
-  -d Visualization, --download=Visualization -- Allows the download from refseq database<br>
-  -q, --quality -------------------------------- Determine quality of given genomes<br>
-  -r Rank, --rank=Rank ------------------------- Rank for comparison (genus, family, order, class, phylum, kingdom, domain<br>
-  -t Taxon, --taxon=Taxon ---------------------- eg. Streptomyces<br>
-  --completness=completness -------------------- Minimun completness accepted to pass the quality check<br>
-  --contigs=contig_number ---------------------- Maximum contig number accepted to pass the quality check<br>
-  --contamination=contamination ---------------- Maximum contamination percentage accepted to pass the quality check<br>
-  -n annotation, --annotation=annotation ------- Annotate the genome with the assigned annotator (prokka,dfast,etc). Default = prokka<br>
-  -a, --antismash ------------------------------ Do antismash<br>
-  -b, --bigscape ------------------------------- Do bigscape<br>
-  --bigscape_cutoffs=CUTOFF -------------------- Dutoffs for bigscape. "0.3, 0.6, 0.9" Default = 0.6<br>
-  -v, --visual --------------------------------- Simple visualization output for bigscape run as an HTML file<br>
+## Acerca de esta herramienta
+Esta herramienta es una tubería creada para facilitar los pasos necesarios para generar redes de BGC con BiG-SCAPE.
+Es capaz de descargar 'n' genomas de RefSeq, evaluar su calidad, anotarlos, ejecutar antiSMASH y finalmente utilizar estos BGC para generar redes de BiG-SCAPE.
+Cada paso se puede ejecutar de forma independiente, lo que la hace adecuada para necesidades específicas.
 
+## Opciones disponibles
+Opciones:
+- -h, --help: muestra este mensaje de ayuda y sale
+- -i file.csv, --input=file.csv: archivo CSV con cepas para descargar
+- -o Carpeta, --out=Carpeta: carpeta de salida
+- -d Visualización, --download=Visualización: permite la descarga desde la base de datos de RefSeq
+- -q, --quality: determina la calidad de los genomas proporcionados
+- -r Rango, --rank=Rango: rango para la comparación (género, familia, orden, clase, filo, reino, dominio)
+- -t Taxon, --taxon=Taxon: por ejemplo, Streptomyces
+- --completness=completness: completitud mínima aceptada para pasar la verificación de calidad
+- --contigs=contig_number: número máximo de contigs aceptados para pasar la verificación de calidad
+- --contamination=contamination: porcentaje máximo de contaminación aceptado para pasar la verificación de calidad
+- -n anotación, --annotation=anotación: anota el genoma con el anotador asignado (prokka, dfast, etc.). Por defecto: prokka
+- -a, --antismash: ejecuta antiSMASH
+- -b, --bigscape: ejecuta BiG-SCAPE
+- --bigscape_cutoffs=CUTOFF: umbrales para BiG-SCAPE. "0.3, 0.6, 0.9". Por defecto: 0.6
+- -v, --visual: salida de visualización simple para BiG-SCAPE como un archivo HTML
 
-## Future improvements
-- Make it faster by simplifying some analysis <br>
-- Addition several other annotators (like D-fast) as options<br>
-- Add feature display on the visualization file<br>
-- 
+## Mejoras futuras
+- Hacerlo más rápido simplificando algunos análisis
+- Agregar varios otros anotadores (como D-fast) como opciones
+- Agregar visualización de características en el archivo de visualización
 
 
 
